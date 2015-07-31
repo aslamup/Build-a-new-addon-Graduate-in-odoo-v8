@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+
+        <record model="ir.actions.act_window" id="action_graduate">
+            <field name="name">Create Graduate</field>
+            <field name="res_model">graduate.course</field>
+            <field name="view_mode">form,kanban,tree,search</field>
+            <field name="context">{"search_default_filter_training":1}</field>
+            <field name="search_view_id" ref="view_student_search"/>
+            <field name="domain">[]</field>
+        </record>
+
+          <record model="ir.actions.act_window" id="action_trainee">
+            <field name="name">Trainee List</field>
+            <field name="res_model">graduate.course</field>
+            <field name="view_mode">kanban,tree,form,search</field>
+            <field name="domain">[('section','=','trainee')]</field>
+        </record>
+
+         <menuitem name="Graduate" id="menu_root" sequence="450"/>
+         <menuitem name="General" id="menu_general" parent="menu_root"/>
+         <menuitem name="Create Graduate" id="menu_courses" parent="menu_general" sequence="1" action="action_graduate"/>
+
+         <menuitem name="Training" id="menu_root1" sequence="110"/>
+        <menuitem name="Trainees Department" id="menu_trainee" parent="menu_root1"/>
+            <menuitem name="Trainee List" id="menu_tr" parent="menu_trainee"
+            sequence="1" action="action_trainee"/>
+
+
+        <menuitem name="Project" id="menu_root2" sequence="110"/>
+        <menuitem name="Project Department" id="menu_project" parent="menu_root2"/>
+        <record model="ir.actions.act_window" id="action_project">
+            <field name="name">Project Team</field>
+            <field name="res_model">graduate.course</field>
+            <field name="view_mode">kanban,form,tree,search</field>
+            <field name="domain">[('section','=','perm')]</field>
+        </record>
+        <menuitem name="Project Team" id="menu_pr" parent="menu_project"
+            sequence="1" action="action_project"/>
+
+         <record model="ir.ui.view" id="action_form_view">
+            <field name="name">graduate.order.form</field>
+            <field name="model">graduate.course</field>
+            <field name="arch" type="xml">
+                <form string="Ship">
+                        <sheet>
+                        <group>
+                            <group>
+                            <field name="name"/>
+                            <field name="section"/>
+                            </group>
+                        </group>
+                        </sheet>
+                </form>
+            </field>
+        </record>
+
+         <record model="ir.ui.view" id="action_tree_view">
+            <field name="name">graduate.order.tree</field>
+            <field name="model">graduate.course</field>
+            <field name="arch" type="xml">
+                    <tree >
+                        <field name="name"/>
+                        <field name="section"/>
+                    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="My_kanban">
+        <field name="name">Kanban</field>
+        <field name="model">graduate.course</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="section"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_vignette oe_semantic_html_override">
+                            <a type="open"><img t-att-src="kanban_image('graduate.course', 'image_small', record.id.value)" class="oe_kanban_image"/></a>
+                            <div class="oe_kanban_details">
+                                <div name="tags"/>
+                                <ul>
+                                    <li>Name: <field name="name"></field></li>
+                                    <li>Section: <field name="section"></field></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+        <record id="view_student_search" model="ir.ui.view">
+            <field name="name">Stage - Search</field>
+            <field name="model">graduate.course</field>
+            <field name="arch" type="xml">
+                <search string="Stage Search">
+                <field name="name"/>
+                <field name="section" />
+                <group expand="0" string="Group By">
+                    <filter context="{'group_by':'section'}" name="filter_training"/>
+                </group>
+            </search>
+            </field>
+        </record>
+
+    </data>
+</openerp>
